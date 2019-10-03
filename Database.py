@@ -24,23 +24,27 @@ def delStud(name):
     student = { 'Name': name }
     mycol.delete_one(student)
 
+#call this function when registering student
 def regStud(name, studId):
     studId = studId.upper()
     name = name.upper()
     newStud = { '_id': studId, 'Name': name, 'Attended': 'Yes'}
     insertStud = mycol.insert_one(newStud)
 
+#called in identify_face_video
 def takeAttendance(name):
     name = name.upper()
     myquery = { 'Name': name }
     newValues = { '$set': { 'Attended': 'Yes'}}
     updateValues = mycol.update_one(myquery, newValues)
 
+#Need a 'New Class' button. Call when button is clicked
 def newClass():
     myquery = { 'Attended': 'Yes'}
     newValues = { '$set' : { 'Attended': 'No'}}
     updateValues = mycol.update_many(myquery, newValues)
 
+#Call export() and email() when ending class
 def export():
     allStud = mycol.find()
     allStud = list(allStud)
