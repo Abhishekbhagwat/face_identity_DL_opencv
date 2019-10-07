@@ -10,6 +10,7 @@ import detect_face
 import os
 import time
 import pickle
+import Database as db
 
 modeldir = './model/20170511-185253.pb'
 classifier_filename = './class/classifier.pkl'
@@ -119,6 +120,7 @@ with tf.Graph().as_default():
                             for H_i in HumanNames:
                                 if HumanNames[best_class_indices[0]] == H_i:
                                     result_names = HumanNames[best_class_indices[0]]
+                                    db.takeAttendance(result_names)
                                     cv2.putText(frame, result_names, (text_x, text_y), cv2.FONT_HERSHEY_COMPLEX_SMALL,
                                                 1, (0, 0, 255), thickness=1, lineType=2)
                 else:
