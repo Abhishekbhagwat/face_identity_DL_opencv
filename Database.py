@@ -25,10 +25,11 @@ def delStud(name):
     mycol.delete_one(student)
 
 #call this function when registering student
-def regStud(name, studId):
+def regStud(name, studId, tutClass):
     studId = studId.upper()
     name = name.upper()
-    newStud = { '_id': studId, 'Name': name, 'Attended': 'Yes'}
+    tutClass = tutClass.upper()
+    newStud = { 'Class': tutClass, '_id': studId, 'Name': name, 'Attended': 'Yes' }
     insertStud = mycol.insert_one(newStud)
 
 #called in identify_face_video
@@ -39,17 +40,19 @@ def takeAttendance(name):
     updateValues = mycol.update_one(myquery, newValues)
 
 #Need a 'New Class' button. Call when button is clicked
-def newClass():
-    myquery = { 'Attended': 'Yes'}
+def newClass(tutClass):
+    tutClass = tutClass.upper()
+    myquery = { 'Class': tutClass}
     newValues = { '$set' : { 'Attended': 'No'}}
     updateValues = mycol.update_many(myquery, newValues)
 
 #Call export() and email() when ending class
-def export():
-    allStud = mycol.find()
+def export(tutClass):
+    tutClass = tutClass.upper()
+    allStud = mycol.find( { 'Class': { '$eq': tutClass } })
     allStud = list(allStud)
     with open('CZ3002 Attendance List.csv', 'w', newline = '') as outfile:   
-        fields = ['_id', 'Name', 'Attended']
+        fields = ['Class', '_id', 'Name', 'Attended']
         write = csv.DictWriter(outfile, fieldnames=fields)
         write.writeheader()
         for stud in allStud: 
