@@ -29,7 +29,7 @@ def regStud(name, studId, tutClass):
     studId = studId.upper()
     name = name.upper()
     tutClass = tutClass.upper()
-    newStud = { 'Class': tutClass, '_id': studId, 'Name': name, 'Attended': 'Yes' }
+    newStud = { 'Class': tutClass, '_id': studId, 'Name': name, 'Attended': 'No' }
     insertStud = mycol.insert_one(newStud)
 
 #called in identify_face_video
